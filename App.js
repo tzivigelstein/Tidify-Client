@@ -12,13 +12,12 @@ import {
 
 import { StatusBar, StyleSheet } from 'react-native'
 
-import CartIcon from './components/CartIcon'
-
 import Form from './views/Form'
 import Menu from './views/Menu'
 import Product from './views/Product'
 import Resume from './views/Resume'
 import Progress from './views/Progress'
+import HeaderRight from './components/HeaderRight/HeaderRight'
 
 const Stack = createStackNavigator()
 
@@ -43,12 +42,10 @@ const App = () => {
             <Stack.Screen
               name="Menu"
               component={Menu}
-              options={({ navigation, route }) => ({
+              options={{
                 title: 'Menu',
-                headerRight: () => (
-                  <CartIcon onPress={() => navigation.navigate('Resume')} />
-                ),
-              })}
+                headerRight: () => <HeaderRight />,
+              }}
             />
 
             <Stack.Screen

@@ -1,7 +1,11 @@
 import React, { useReducer } from 'react'
 import AppReducer from './appReducer'
 import AppContext from './appContext'
-import { SELECT_PRODUCT, ADD_PRODUCT_TO_CART } from '../../types'
+import {
+  SELECT_PRODUCT,
+  ADD_PRODUCT_TO_CART,
+  DELETE_PRODUCT,
+} from '../../types'
 
 const FirebaseState = ({ children }) => {
   const initialState = {
@@ -28,10 +32,19 @@ const FirebaseState = ({ children }) => {
     }
 
     if (hasSameId()) {
-      state.cart.map(item => {
+      let modifiedProduct
+      state.cart.forEach(item => {
         if (item.id === productId) {
-          item.quantity += product.quantity
+          modifiedProduct = {
+            ...product,
+            quantity: product.quantity + item.quantity,
+          }
         }
+      })
+      state.cart = state.cart.filter(item => item.id !== product.id)
+      dispatch({
+        type: ADD_PRODUCT_TO_CART,
+        payload: modifiedProduct,
       })
     } else {
       dispatch({
@@ -41,6 +54,13 @@ const FirebaseState = ({ children }) => {
     }
   }
 
+  const deleteProduct = productId => {
+    dispatch({
+      type: DELETE_PRODUCT,
+      payload: productId,
+    })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -48,6 +68,7 @@ const FirebaseState = ({ children }) => {
         product: state.product,
         selectProduct,
         addProductToCart,
+        deleteProduct,
       }}
     >
       {children}

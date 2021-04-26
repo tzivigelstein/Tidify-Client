@@ -1,10 +1,26 @@
 import * as React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { useEffect } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
 import Svg, { Circle, Path } from 'react-native-svg'
+import useTotal from '../../useTotal'
 
 function SvgComponent({ onPress }) {
+  const [totalPrice, totalQuantity] = useTotal()
   return (
-    <TouchableOpacity style={{ marginRight: 16 }} onPress={onPress}>
+    <TouchableOpacity
+      style={{ marginRight: 16, flexDirection: 'row', alignItems: 'center' }}
+      onPress={onPress}
+    >
+      <Text
+        style={{
+          marginRight: 10,
+          fontSize: 15,
+          color: '#fff',
+          fontWeight: 'bold',
+        }}
+      >
+        ${totalPrice}
+      </Text>
       <Svg
         viewBox="0 0 24 24"
         width={21}

@@ -8,12 +8,14 @@ import {
   GET_PRODUCTS_ERROR,
   UPDATE_SEARCH,
   RESET_FILTER,
+  GET_ORDER_STATUS,
 } from '../../types'
 
 const FirebaseState = ({ children }) => {
   const initialState = {
     menu: [],
     filteredMenu: [],
+    orders: {},
   }
 
   const [state, dispatch] = useReducer(FirebaseReducer, initialState)
@@ -73,16 +75,40 @@ const FirebaseState = ({ children }) => {
     })
   }
 
+  const getOrderStatus = () => {
+    firebase.db.collection('orders').onSnapshot(handleSnapshot)
+
+    function handleSnapshot(snapshot) {
+      let products = snapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        }
+      })
+      dispatch({
+        type: GET_ORDER_STATUS,
+        payload: products,
+      })
+    }
+  }
+
+  const deleteOrder = async id => {
+    await firebase.db.collection('orders').doc(id).delete()
+  }
+
   return (
     <FirebaseContext.Provider
       value={{
         firebase,
         menu: state.menu,
         filteredMenu: state.filteredMenu,
+        orders: state.orders,
         getProducts,
         filterMenu,
         filterCategory,
         resetFilter,
+        getOrderStatus,
+        deleteOrder,
       }}
     >
       {children}

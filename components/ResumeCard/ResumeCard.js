@@ -1,8 +1,10 @@
-import React from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import React, { useContext } from 'react'
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
+import AppContext from '../../context/app-context/appContext'
 import styles from './resumecard.styles'
 
 const ResumeCard = ({ product }) => {
+  const { deleteProduct } = useContext(AppContext)
   const {
     id,
     category,
@@ -14,8 +16,19 @@ const ResumeCard = ({ product }) => {
     quantity,
   } = product
 
+  const handleLongPress = () => {
+    Alert.alert('Eliminar producto', `¿Queres eliminar ${name}?`, [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('cancel'),
+        style: 'cancel',
+      },
+      { text: 'Eliminar', onPress: () => deleteProduct(id) },
+    ])
+  }
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onLongPress={handleLongPress}>
       <View style={styles.container}>
         <View style={styles.infoContainer}>
           <View style={styles.heading}>

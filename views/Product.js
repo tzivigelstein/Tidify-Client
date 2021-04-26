@@ -87,10 +87,7 @@ const Product = () => {
         <TouchableOpacity onPress={onContinue} style={styles.buttonCart}>
           <Text style={styles.buttonTextCart}>Añadir al carrito</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.navigate('Resume')}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={onContinue} style={styles.button}>
           <Text style={styles.buttonText}>Comprar ahora</Text>
         </TouchableOpacity>
       </View>

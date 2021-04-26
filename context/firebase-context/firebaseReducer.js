@@ -1,4 +1,9 @@
-import { GET_PRODUCTS_SUCCESS, RESET_FILTER, UPDATE_SEARCH } from '../../types'
+import {
+  GET_PRODUCTS_SUCCESS,
+  RESET_FILTER,
+  UPDATE_SEARCH,
+  GET_ORDER_STATUS,
+} from '../../types'
 
 export default (state, action) => {
   switch (action.type) {
@@ -18,6 +23,12 @@ export default (state, action) => {
       return {
         ...state,
         filteredMenu: [],
+      }
+
+    case GET_ORDER_STATUS:
+      return {
+        ...state,
+        orders: action.payload,
       }
     default:
       return state

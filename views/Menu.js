@@ -8,6 +8,7 @@ import globalStyles from '../styles/global'
 import { useNavigation } from '@react-navigation/native'
 import SearchBar from '../components/SearchBar/SearchBar'
 import CategoriesBar from '../components/CategoriesBar/CategoriesBar'
+import useTotal from '../useTotal'
 
 const Menu = () => {
   const { menu, filteredMenu, getProducts } = useContext(FirebaseContext)
