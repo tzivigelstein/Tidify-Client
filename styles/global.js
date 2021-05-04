@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
 
   activityIndicator: {
-    color: 'hsl(11, 91%, 68%)',
+    color: '#eee',
   },
 })
 

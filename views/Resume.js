@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import firebase from '../firebase'
 
 const Resume = () => {
-  const { product, cart } = useContext(AppContext)
+  const { product, cart, emptyCart } = useContext(AppContext)
   const [totalPrice, totalQuantity] = useTotal()
 
   const router = useNavigation()
@@ -26,8 +26,11 @@ const Resume = () => {
   }
 
   const order = async () => {
+    const min = 60000 * 20
+    const max = 60000 * 40
+    const deliveryTime = Math.floor(Math.random() * (max - min) + min)
     const newOrder = {
-      deliveryTime: 0,
+      deliveryTime,
       status: false,
       total: Number(totalPrice),
       cart,
@@ -36,6 +39,7 @@ const Resume = () => {
 
     try {
       await firebase.db.collection('orders').add(newOrder)
+      emptyCart()
     } catch (error) {
       console.log(error)
     }

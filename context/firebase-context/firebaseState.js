@@ -9,26 +9,34 @@ import {
   UPDATE_SEARCH,
   RESET_FILTER,
   GET_ORDER_STATUS,
+  UPDATE_LAST_DOCUMENT,
+  GET_MORE_PRODUCTS_SUCCESS,
+  GET_MORE_PRODUCTS,
 } from '../../types'
 
 const FirebaseState = ({ children }) => {
   const initialState = {
     menu: [],
     filteredMenu: [],
-    orders: {},
+    orders: [],
+    loading: false,
+    latestDoc: null,
   }
 
   const [state, dispatch] = useReducer(FirebaseReducer, initialState)
 
-  const getProducts = () => {
-    firebase.db
-      .collection('products')
-      .where('stock', '==', true)
-      .onSnapshot(handleSnapshot)
+  const PRODUCT_LIMIT = 8
 
+  const getProducts = () => {
     dispatch({
       type: GET_PRODUCTS,
     })
+    firebase.db
+      .collection('products')
+      .where('stock', '==', true)
+      .orderBy('createdAt')
+      .limit(PRODUCT_LIMIT)
+      .onSnapshot(handleSnapshot, err => console.log('error peticion', err))
 
     function handleSnapshot(snapshot) {
       let products = snapshot.docs.map(doc => {
@@ -37,10 +45,50 @@ const FirebaseState = ({ children }) => {
           ...doc.data(),
         }
       })
+
       dispatch({
         type: GET_PRODUCTS_SUCCESS,
         payload: products,
       })
+
+      products.length !== 0 &&
+        dispatch({
+          type: UPDATE_LAST_DOCUMENT,
+          payload: snapshot,
+        })
+    }
+  }
+
+  const getMoreProducts = () => {
+    dispatch({
+      type: GET_MORE_PRODUCTS,
+    })
+    firebase.db
+      .collection('products')
+      .where('stock', '==', true)
+      .orderBy('createdAt')
+      .startAfter(state.latestDoc)
+      .limit(PRODUCT_LIMIT)
+      .onSnapshot(handleSnapshot, err => console.log('error peticion', err))
+
+    function handleSnapshot(snapshot) {
+      let products = snapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        }
+      })
+
+      dispatch({
+        type: GET_MORE_PRODUCTS_SUCCESS,
+        payload: products,
+      })
+
+      products.length !== 0 &&
+        dispatch({
+          type: UPDATE_LAST_DOCUMENT,
+          payload: snapshot,
+        })
     }
   }
 
@@ -76,7 +124,10 @@ const FirebaseState = ({ children }) => {
   }
 
   const getOrderStatus = () => {
-    firebase.db.collection('orders').onSnapshot(handleSnapshot)
+    firebase.db
+      .collection('orders')
+      .orderBy('status', 'desc')
+      .onSnapshot(handleSnapshot, error => console.log(error))
 
     function handleSnapshot(snapshot) {
       let products = snapshot.docs.map(doc => {
@@ -103,7 +154,10 @@ const FirebaseState = ({ children }) => {
         menu: state.menu,
         filteredMenu: state.filteredMenu,
         orders: state.orders,
+        loading: state.loading,
+        latestDoc: state.latestDoc,
         getProducts,
+        getMoreProducts,
         filterMenu,
         filterCategory,
         resetFilter,

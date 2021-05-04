@@ -12,6 +12,7 @@ import {
 
 import { StatusBar, StyleSheet } from 'react-native'
 
+import SplashScreen from './views/SplashScreen'
 import Form from './views/Form'
 import Menu from './views/Menu'
 import Product from './views/Product'
@@ -40,11 +41,20 @@ const App = () => {
             }}
           >
             <Stack.Screen
+              name="SplashScreen"
+              component={SplashScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
               name="Menu"
               component={Menu}
               options={{
                 title: 'Menu',
                 headerRight: () => <HeaderRight />,
+                headerLeft: () => null,
               }}
             />
 

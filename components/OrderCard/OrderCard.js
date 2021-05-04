@@ -14,11 +14,19 @@ const OrderCard = ({ product }) => {
 
   useEffect(() => {
     startAnimation()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const time = new Date(createdAt).toLocaleTimeString('es-ES', {
-    hour: '2-digit',
-    minute: '2-digit',
+  const time = new Date(createdAt).toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: 'numeric',
+  })
+
+  const parsedDeliveryTime = new Date(
+    createdAt + deliveryTime
+  ).toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: 'numeric',
   })
 
   const startAnimation = () => {
@@ -38,6 +46,7 @@ const OrderCard = ({ product }) => {
       }),
     ]).start(() => startAnimation())
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.heading}>
@@ -64,7 +73,7 @@ const OrderCard = ({ product }) => {
       </View>
       <View style={styles.infoContainer}>
         <Text>Ordenado a las {time}</Text>
-        {!status && <Text>Listo en {deliveryTime}</Text>}
+        {!status && <Text>Listo a las {parsedDeliveryTime}</Text>}
       </View>
       {status && (
         <TouchableOpacity onPress={() => deleteOrder(id)} style={styles.button}>

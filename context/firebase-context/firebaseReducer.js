@@ -3,14 +3,40 @@ import {
   RESET_FILTER,
   UPDATE_SEARCH,
   GET_ORDER_STATUS,
+  GET_PRODUCTS,
+  UPDATE_LAST_DOCUMENT,
+  GET_MORE_PRODUCTS,
+  GET_MORE_PRODUCTS_SUCCESS,
 } from '../../types'
 
 export default (state, action) => {
   switch (action.type) {
+    case GET_PRODUCTS:
+      return {
+        ...state,
+        loading: true,
+      }
+
     case GET_PRODUCTS_SUCCESS:
       return {
         ...state,
         menu: action.payload,
+        loading: false,
+      }
+
+    case GET_MORE_PRODUCTS:
+      return state
+
+    case GET_MORE_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        menu: [...state.menu, ...action.payload],
+      }
+
+    case UPDATE_LAST_DOCUMENT:
+      return {
+        ...state,
+        latestDoc: action.payload.docs[action.payload.docs.length - 1],
       }
 
     case UPDATE_SEARCH:

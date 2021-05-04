@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ScrollView, Text, TouchableHighlight } from 'react-native'
 import FirebaseContext from '../../context/firebase-context/firebaseContext'
 import styles from './categoriesbar.styles'
 import TimesIcon from '../TimesIcon'
+import { useNavigation } from '@react-navigation/core'
 
 const CATEGORIES = [
   { category: 'Desayuno', value: 'desayuno' },
@@ -16,7 +17,19 @@ const CATEGORIES = [
 const CategoriesBar = () => {
   const { filterCategory, resetFilter } = useContext(FirebaseContext)
 
+  const router = useNavigation()
+
   const [activeCategory, setActiveCategory] = useState(null)
+
+  useEffect(() => {
+    router.addListener('beforeRemove', e => {
+      resetFilter()
+      setActiveCategory(null)
+      e.preventDefault()
+      return
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handlePress = cat => {
     if (cat === activeCategory) {

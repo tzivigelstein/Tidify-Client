@@ -5,6 +5,7 @@ import {
   SELECT_PRODUCT,
   ADD_PRODUCT_TO_CART,
   DELETE_PRODUCT,
+  EMPTY_CART,
 } from '../../types'
 
 const FirebaseState = ({ children }) => {
@@ -61,6 +62,12 @@ const FirebaseState = ({ children }) => {
     })
   }
 
+  const emptyCart = () => {
+    dispatch({
+      type: EMPTY_CART,
+    })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -69,6 +76,7 @@ const FirebaseState = ({ children }) => {
         selectProduct,
         addProductToCart,
         deleteProduct,
+        emptyCart,
       }}
     >
       {children}
