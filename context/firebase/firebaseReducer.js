@@ -7,6 +7,7 @@ import {
   UPDATE_LAST_DOCUMENT,
   GET_MORE_PRODUCTS,
   GET_MORE_PRODUCTS_SUCCESS,
+  SET_USER,
 } from '../../types'
 
 export default (state, action) => {
@@ -25,11 +26,15 @@ export default (state, action) => {
       }
 
     case GET_MORE_PRODUCTS:
-      return state
+      return {
+        ...state,
+        loadingMore: true,
+      }
 
     case GET_MORE_PRODUCTS_SUCCESS:
       return {
         ...state,
+        loadingMore: false,
         menu: [...state.menu, ...action.payload],
       }
 
@@ -55,6 +60,12 @@ export default (state, action) => {
       return {
         ...state,
         orders: action.payload,
+      }
+
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
       }
     default:
       return state

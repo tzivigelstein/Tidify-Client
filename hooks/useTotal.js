@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react'
-import { useEffect } from 'react/cjs/react.development'
-import AppContext from './context/app-context/appContext'
+import { useContext, useState, useEffect } from 'react'
+import AppContext from '../context/app/appContext'
 
 const useTotal = () => {
   const { cart } = useContext(AppContext)

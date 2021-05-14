@@ -14,6 +14,25 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'steady-regular',
   },
+
+  googleLogo: {
+    width: 30,
+    height: 30,
+  },
+
+  loginButton: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+
+  loginButtonText: {
+    color: '#000',
+    marginLeft: 10,
+  },
 })
 
 export default styles

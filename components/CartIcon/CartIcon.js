@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import Svg, { Circle, Path } from 'react-native-svg'
-import useTotal from '../../useTotal'
+import useTotal from '../../hooks/useTotal'
 
 function SvgComponent({ onPress }) {
   const [totalPrice] = useTotal()

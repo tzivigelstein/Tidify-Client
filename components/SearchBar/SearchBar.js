@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native'
 import styles from './searchbar.styles'
 import SearchIcon from '../SearchIcon'
 import TimesIcon from '../TimesIcon'
-import FirebaseContext from '../../context/firebase-context/firebaseContext'
+import FirebaseContext from '../../context/firebase/firebaseContext'
 
 const SearchBar = () => {
   const { filterMenu, resetFilter } = useContext(FirebaseContext)

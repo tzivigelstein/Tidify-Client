@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler'
 import React from 'react'
 
-import FirebaseState from './context/firebase-context/firebaseState'
-import AppState from './context/app-context/appState'
+import FirebaseState from './context/firebase/firebaseState'
+import AppState from './context/app/appState'
 
 import { NavigationContainer } from '@react-navigation/native'
 import {

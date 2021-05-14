@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Image, Text, View, Alert, TouchableOpacity } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import styles from './product.styles.js'
-import AppContext from '../context/app-context/appContext'
+import AppContext from '../context/app/appContext'
 import { useNavigation } from '@react-navigation/native'
 
 const Product = () => {

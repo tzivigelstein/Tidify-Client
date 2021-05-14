@@ -4,6 +4,7 @@ import styles from './card.styles'
 
 const Card = ({ product, onPress }) => {
   const {
+    id,
     category,
     stock,
     name,

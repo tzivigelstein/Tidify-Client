@@ -2,6 +2,7 @@ import React, { useReducer } from 'react'
 import FirebaseReducer from './firebaseReducer'
 import FirebaseContext from './firebaseContext'
 import firebase from '../../firebase'
+import firebaseLib from 'firebase'
 import {
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
@@ -12,6 +13,7 @@ import {
   UPDATE_LAST_DOCUMENT,
   GET_MORE_PRODUCTS_SUCCESS,
   GET_MORE_PRODUCTS,
+  SET_USER,
 } from '../../types'
 
 const FirebaseState = ({ children }) => {
@@ -20,25 +22,30 @@ const FirebaseState = ({ children }) => {
     filteredMenu: [],
     orders: [],
     loading: false,
+    loadingMore: false,
     latestDoc: null,
+    user: null,
   }
 
   const [state, dispatch] = useReducer(FirebaseReducer, initialState)
 
   const PRODUCT_LIMIT = 8
 
-  const getProducts = () => {
+  const getProducts = async () => {
     dispatch({
       type: GET_PRODUCTS,
     })
-    firebase.db
+    const query = await firebase.db
       .collection('products')
       .where('stock', '==', true)
       .orderBy('createdAt')
       .limit(PRODUCT_LIMIT)
-      .onSnapshot(handleSnapshot, err => console.log('error peticion', err))
+      .get()
 
+    !query.empty && handleSnapshot(query)
+    console.log(!query.empty)
     function handleSnapshot(snapshot) {
+      console.log('llegaron los prod')
       let products = snapshot.docs.map(doc => {
         return {
           id: doc.id,
@@ -59,17 +66,19 @@ const FirebaseState = ({ children }) => {
     }
   }
 
-  const getMoreProducts = () => {
+  const getMoreProducts = async () => {
     dispatch({
       type: GET_MORE_PRODUCTS,
     })
-    firebase.db
+    const query = await firebase.db
       .collection('products')
       .where('stock', '==', true)
       .orderBy('createdAt')
       .startAfter(state.latestDoc)
       .limit(PRODUCT_LIMIT)
-      .onSnapshot(handleSnapshot, err => console.log('error peticion', err))
+      .get()
+
+    !query.empty && handleSnapshot(query)
 
     function handleSnapshot(snapshot) {
       let products = snapshot.docs.map(doc => {
@@ -147,6 +156,32 @@ const FirebaseState = ({ children }) => {
     await firebase.db.collection('orders').doc(id).delete()
   }
 
+  const loginWithGoogle = async () => {
+    const googleProvider = firebaseLib.auth.GoogleAuthProvider()
+    const data = await firebaseLib.auth().signInWithPopup(googleProvider)
+
+    return data
+  }
+
+  const onAuthStateChanged = () => {
+    const mapUserFromFirebaseAuth = data => {
+      const { displayName, email, photoURL, uid } = data
+      return {
+        displayName,
+        email,
+        photoURL,
+        uid,
+      }
+    }
+    return firebaseLib.auth().onAuthStateChanged(user => {
+      const normalizedUser = user ? mapUserFromFirebaseAuth(user) : null
+      dispatch({
+        type: SET_USER,
+        payload: normalizedUser,
+      })
+    })
+  }
+
   return (
     <FirebaseContext.Provider
       value={{
@@ -155,7 +190,9 @@ const FirebaseState = ({ children }) => {
         filteredMenu: state.filteredMenu,
         orders: state.orders,
         loading: state.loading,
+        loadingMore: state.loadingMore,
         latestDoc: state.latestDoc,
+        user: state.user,
         getProducts,
         getMoreProducts,
         filterMenu,
@@ -163,6 +200,8 @@ const FirebaseState = ({ children }) => {
         resetFilter,
         getOrderStatus,
         deleteOrder,
+        loginWithGoogle,
+        onAuthStateChanged,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
-import React, { useEffect, useContext, useState } from 'react'
-import FirebaseContext from '../context/firebase-context/firebaseContext'
-import AppContext from '../context/app-context/appContext'
-import { Button, FlatList, Text, View } from 'react-native'
+import React, { useEffect, useContext } from 'react'
+import FirebaseContext from '../context/firebase/firebaseContext'
+import AppContext from '../context/app/appContext'
+import { ActivityIndicator, FlatList, View } from 'react-native'
 import Card from '../components/Card/Card'
 import styles from './menu.styles'
 
@@ -15,6 +15,7 @@ const Menu = () => {
     filteredMenu,
     getProducts,
     loading,
+    loadingMore,
     getMoreProducts,
   } = useContext(FirebaseContext)
   const { selectProduct } = useContext(AppContext)
@@ -51,6 +52,15 @@ const Menu = () => {
         onRefresh={getProducts}
         onEndReached={getMoreProducts}
         onEndReachedThreshold={0.7}
+        ListFooterComponent={
+          loadingMore && (
+            <ActivityIndicator
+              style={{ marginVertical: 16 }}
+              size="small"
+              color="#999"
+            />
+          )
+        }
       />
     </View>
   )

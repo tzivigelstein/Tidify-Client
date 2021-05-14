@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ScrollView, Text, TouchableHighlight } from 'react-native'
-import FirebaseContext from '../../context/firebase-context/firebaseContext'
+import FirebaseContext from '../../context/firebase/firebaseContext'
 import styles from './categoriesbar.styles'
 import TimesIcon from '../TimesIcon'
 import { useNavigation } from '@react-navigation/core'

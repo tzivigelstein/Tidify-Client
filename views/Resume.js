@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { Alert, FlatList, Text, TouchableOpacity, View } from 'react-native'
 import ResumeCard from '../components/ResumeCard/ResumeCard'
-import AppContext from '../context/app-context/appContext'
+import AppContext from '../context/app/appContext'
 import styles from './resume.styles'
 import ChevronRightIcon from '../components/ChevronRightIcon'
-import useTotal from '../useTotal'
+import useTotal from '../hooks/useTotal'
 import { useNavigation } from '@react-navigation/native'
 import firebase from '../firebase'
+import ResumePlaceholder from '../components/ResumePlaceholder/ResumePlaceholder'
 
 const Resume = () => {
   const { product, cart, emptyCart } = useContext(AppContext)
@@ -69,8 +70,20 @@ const Resume = () => {
           </View>
         </>
       ) : (
-        <View>
-          <Text>No items</Text>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <ResumePlaceholder />
+          </View>
+          <Text style={styles.muted}>
+            Te veo con hambre pero el carrito está vacio... 🤔
+          </Text>
+          <Text style={styles.cta}>Agregate algo 👇</Text>
+          <TouchableOpacity
+            style={styles.finishButton}
+            onPress={() => router.navigate('Menu')}
+          >
+            <Text style={styles.finishButtonText}>Ir al menú</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

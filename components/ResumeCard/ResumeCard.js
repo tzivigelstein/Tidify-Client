@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
-import AppContext from '../../context/app-context/appContext'
+import AppContext from '../../context/app/appContext'
 import styles from './resumecard.styles'
 
 const ResumeCard = ({ product }) => {

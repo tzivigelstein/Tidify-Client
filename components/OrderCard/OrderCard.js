@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Animated, Easing, Text, TouchableOpacity, View } from 'react-native'
-import FirebaseContext from '../../context/firebase-context/firebaseContext'
+import FirebaseContext from '../../context/firebase/firebaseContext'
 import styles from './ordercard.styles'
 
 const OrderCard = ({ product }) => {

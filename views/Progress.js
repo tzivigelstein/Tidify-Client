@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useEffect } from 'react'
 import { View, FlatList } from 'react-native'
 import OrderCard from '../components/OrderCard/OrderCard'
-import FirebaseContext from '../context/firebase-context/firebaseContext'
+import FirebaseContext from '../context/firebase/firebaseContext'
 import styles from './progress.style'
 
 const Progress = () => {
