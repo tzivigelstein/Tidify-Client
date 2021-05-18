@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import FirebaseState from './context/firebase/firebaseState'
 import AppState from './context/app/appState'
@@ -10,7 +10,7 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack'
 
-import { StatusBar, StyleSheet } from 'react-native'
+import { LogBox, StatusBar, StyleSheet } from 'react-native'
 
 import SplashScreen from './views/SplashScreen'
 import Form from './views/Form'
@@ -23,6 +23,9 @@ import HeaderRight from './components/HeaderRight/HeaderRight'
 const Stack = createStackNavigator()
 
 const App = () => {
+  useEffect(() => {
+    LogBox.ignoreLogs(['Setting a timer'])
+  }, [])
   return (
     <FirebaseState>
       <AppState>

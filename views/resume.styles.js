@@ -47,8 +47,9 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    width: '100%',
+    width: '70%',
     marginVertical: 32,
+    marginHorizontal: '15%',
   },
 
   muted: {

@@ -8,6 +8,7 @@ import {
   GET_MORE_PRODUCTS,
   GET_MORE_PRODUCTS_SUCCESS,
   SET_USER,
+  GET_MORE_PRODUCTS_ERROR,
 } from '../../types'
 
 export default (state, action) => {
@@ -36,6 +37,12 @@ export default (state, action) => {
         ...state,
         loadingMore: false,
         menu: [...state.menu, ...action.payload],
+      }
+
+    case GET_MORE_PRODUCTS_ERROR:
+      return {
+        ...state,
+        loadingMore: false,
       }
 
     case UPDATE_LAST_DOCUMENT:

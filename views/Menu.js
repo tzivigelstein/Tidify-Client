@@ -12,7 +12,6 @@ import CategoriesBar from '../components/CategoriesBar/CategoriesBar'
 const Menu = () => {
   const {
     menu,
-    filteredMenu,
     getProducts,
     loading,
     loadingMore,
@@ -34,6 +33,10 @@ const Menu = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  /* 
+  useEffect(() => {
+    console.log(menu)
+  }, [menu]) */
 
   return (
     <View style={styles.container}>
@@ -43,10 +46,32 @@ const Menu = () => {
       </View>
       <FlatList
         style={styles.cardsContainer}
-        data={filteredMenu.length !== 0 ? filteredMenu : menu}
-        renderItem={({ item }) => (
-          <Card onPress={() => selectProductAndNavigate(item)} product={item} />
-        )}
+        data={menu}
+        renderItem={({ item }) => {
+          const {
+            id,
+            category,
+            stock,
+            name,
+            description,
+            price,
+            image,
+            bestSeller,
+          } = item
+          return (
+            <Card
+              onPress={() => selectProductAndNavigate(item)}
+              id={id}
+              category={category}
+              stock={stock}
+              name={name}
+              description={description}
+              price={price}
+              image={image}
+              bestSeller={bestSeller}
+            />
+          )
+        }}
         keyExtractor={item => item.id}
         refreshing={loading}
         onRefresh={getProducts}
@@ -57,7 +82,7 @@ const Menu = () => {
             <ActivityIndicator
               style={{ marginVertical: 16 }}
               size="small"
-              color="#999"
+              color="#f55632"
             />
           )
         }

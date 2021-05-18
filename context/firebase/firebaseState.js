@@ -13,6 +13,7 @@ import {
   UPDATE_LAST_DOCUMENT,
   GET_MORE_PRODUCTS_SUCCESS,
   GET_MORE_PRODUCTS,
+  GET_MORE_PRODUCTS_ERROR,
   SET_USER,
 } from '../../types'
 
@@ -43,9 +44,8 @@ const FirebaseState = ({ children }) => {
       .get()
 
     !query.empty && handleSnapshot(query)
-    console.log(!query.empty)
+
     function handleSnapshot(snapshot) {
-      console.log('llegaron los prod')
       let products = snapshot.docs.map(doc => {
         return {
           id: doc.id,
@@ -67,9 +67,11 @@ const FirebaseState = ({ children }) => {
   }
 
   const getMoreProducts = async () => {
+    if (state.loadingMore) return
     dispatch({
       type: GET_MORE_PRODUCTS,
     })
+
     const query = await firebase.db
       .collection('products')
       .where('stock', '==', true)
@@ -78,15 +80,8 @@ const FirebaseState = ({ children }) => {
       .limit(PRODUCT_LIMIT)
       .get()
 
-    !query.empty && handleSnapshot(query)
-
-    function handleSnapshot(snapshot) {
-      let products = snapshot.docs.map(doc => {
-        return {
-          id: doc.id,
-          ...doc.data(),
-        }
-      })
+    if (!query.empty) {
+      const products = handleSnapshot(query)
 
       dispatch({
         type: GET_MORE_PRODUCTS_SUCCESS,
@@ -96,8 +91,24 @@ const FirebaseState = ({ children }) => {
       products.length !== 0 &&
         dispatch({
           type: UPDATE_LAST_DOCUMENT,
-          payload: snapshot,
+          payload: query,
         })
+    } else {
+      console.log('empty')
+      dispatch({
+        type: GET_MORE_PRODUCTS_ERROR,
+      })
+    }
+
+    function handleSnapshot(snapshot) {
+      let products = snapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        }
+      })
+
+      return products
     }
   }
 

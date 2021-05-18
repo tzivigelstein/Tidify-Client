@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import styles from './card.styles'
 
-const Card = ({ product, onPress }) => {
-  const {
-    id,
-    category,
-    stock,
-    name,
-    description,
-    price,
-    image,
-    bestSeller,
-  } = product
+const Card = ({
+  id,
+  category,
+  stock,
+  name,
+  description,
+  price,
+  image,
+  bestSeller,
+  onPress,
+}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>

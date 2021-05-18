@@ -9,8 +9,7 @@ const SplashScreen = () => {
   const { getProducts, menu } = useContext(FirebaseContext)
 
   useEffect(() => {
-    const unsubscribe = getProducts()
-    return () => unsubscribe()
+    getProducts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
