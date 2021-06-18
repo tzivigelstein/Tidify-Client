@@ -33,10 +33,6 @@ const Menu = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  /* 
-  useEffect(() => {
-    console.log(menu)
-  }, [menu]) */
 
   return (
     <View style={styles.container}>
